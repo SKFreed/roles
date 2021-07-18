@@ -20,3 +20,9 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::resource('right', 'RightController');
+Route::resource('role', 'RoleController');
+Route::resource('user', 'UserController');
+Route::resource('right_user', 'RightUserController')->except(['show', 'create', 'store', 'destroy']);;
+Route::resource('role_user', 'RoleUserController')->except(['show', 'create', 'store', 'destroy']);;
+Route::resource('right_role', 'RightRoleController')->except(['show', 'create', 'store', 'destroy']);;
