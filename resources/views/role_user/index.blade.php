@@ -2,6 +2,9 @@
 
 @section('content')
     <div class="container">
+        @role ('admin')
+        ADMIN
+        @endrole
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h1 class="head">Назначение пользователям ролей</h1>
