@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Right;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class RightServiceProvider extends ServiceProvider
@@ -20,15 +22,19 @@ class RightServiceProvider extends ServiceProvider
     /**
      * Bootstrap services.
      *
-     * @return void
+     * @return bool
      */
     public function boot()
     {
-        Blade::directive('right', function ($right){
-            return "<?php if(auth()->check() && auth()->user()->hasRight({$right})): ?>";
-        });
-        Blade::directive('endright', function ($right){
-            return "<?php endif; ?>";
-        });
+        try {
+            Right::get()->map(function ($right) {
+                Gate::define($right->name, function ($user) use ($right) {
+                    return $user->hasRightTo($right);
+                });
+            });
+        } catch (\Exception $e) {
+            report($e);
+            return false;
+        }
     }
 }
